@@ -38,6 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Determine API URL
+        let apiBase = '';
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && !window.location.hostname.startsWith('10.')) {
+            // Remote deployment (e.g. GitHub Pages)
+            const storedApi = localStorage.getItem('flux_api_url');
+            if (storedApi) {
+                apiBase = storedApi;
+            } else {
+                const inputUrl = window.prompt("Enter your Backend API URL (e.g., https://xyz.ngrok-free.app)\nLeave empty to try relative path.");
+                if (inputUrl) {
+                    apiBase = inputUrl.replace(/\/$/, ""); // remove trailing slash
+                    localStorage.setItem('flux_api_url', apiBase);
+                }
+            }
+        }
+
         // UI State: Loading
         generateBtn.classList.add('loading');
         generateBtn.disabled = true;
@@ -48,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const startTime = Date.now();
 
         try {
-            const response = await fetch('/generate', {
+            const response = await fetch(`${apiBase}/generate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
