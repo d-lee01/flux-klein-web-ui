@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+# flux2 dependencies (explicitly listed to ensure compatibility)
+torch==2.5.1
+torchvision
+einops
+transformers
+safetensors
+fire
+openai
+accelerate
+pillow
+sentencepiece
+protobuf
